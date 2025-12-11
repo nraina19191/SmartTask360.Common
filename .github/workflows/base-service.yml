@@ -25,6 +25,10 @@ jobs:
       # Build solution
       - name: Build
         run: dotnet build SmartTask360.Common.slnx --configuration Release --no-restore
+
+      # Nuget pack
+      - name: Pack NuGet package
+        run: dotnet pack --configuration Release --no-build --no-restore -o artifacts
     
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
