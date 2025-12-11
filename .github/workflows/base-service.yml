@@ -5,11 +5,26 @@ on:
       - main
 jobs:
   build-and-publish:
+    runs-on: ubuntu-latest
     permissions:
       id-token: write  # enable GitHub OIDC token issuance for this job
     
     steps:
-      # Build your artifacts/my-sdk.nupkg package here
+      # Get code
+      - name: Get Code
+        uses: actions/checkout@v5
+      # Setup .Net SDK
+      - name: Setup .Net 9.0
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '9.0.x'
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore SmartTask360.Common.slnx
+
+      # Build solution
+      - name: Build
+        run: dotnet build SmartTask360.Common.slnx --configuration Release --no-restore
     
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
